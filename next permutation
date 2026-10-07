@@ -1,0 +1,36 @@
+#include <stdio.h>
+
+void swap(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void reverse(int* nums, int start, int end) {
+    while (start < end) {
+        swap(&nums[start], &nums[end]);
+        start++;
+        end--;
+    }
+}
+
+void nextPermutation(int* nums, int numsSize) {
+    // Step 1: Find the first element from the right that is smaller than its next element
+    int i = numsSize - 2;
+    while (i >= 0 && nums[i] >= nums[i + 1]) {
+        i--;
+    }
+    
+    if (i >= 0) {
+        // Step 2: Find the first element from the right that is greater than nums[i]
+        int j = numsSize - 1;
+        while (nums[j] <= nums[i]) {
+            j--;
+        }
+        // Step 3: Swap elements at index i and j
+        swap(&nums[i], &nums[j]);
+    }
+    
+    // Step 4: Reverse the elements from index i + 1 to the end of the array
+    reverse(nums, i + 1, numsSize - 1);
+}

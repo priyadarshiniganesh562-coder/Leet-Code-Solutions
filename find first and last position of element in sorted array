@@ -1,0 +1,31 @@
+class Solution:
+    def searchRange(self, nums, target):
+        start = self.findBound(nums, target, True)
+        end = self.findBound(nums, target, False)
+        return [start, end]
+
+    def findBound(self, nums, target, is_left):
+        left, right = 0, len(nums) - 1
+        bound = -1
+        
+        while left <= right:
+            mid = (left + right) // 2
+            
+            if nums[mid] == target:
+                bound = mid
+                if is_left:
+                    right = mid - 1  # Look for earlier occurrences
+                else:
+                    left = mid + 1   # Look for later occurrences
+            elif nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+                
+        return bound
+
+# --- Test Examples ---
+sol = Solution()
+print(sol.searchRange([5, 7, 7, 8, 8, 10], 8))  # Output: [3, 4]
+print(sol.searchRange([5, 7, 7, 8, 8, 10], 6))  # Output: [-1, -1]
+print(sol.searchRange([], 0))                   # Output: [-1, -1]

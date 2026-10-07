@@ -1,0 +1,42 @@
+#include <stdbool.h>
+
+bool isNumber(char* s) {
+    int i = 0;
+
+    // 1. Skip optional leading sign
+    if (s[i] == '+' || s[i] == '-') i++;
+
+    // 2. Scan the main numerical part (digits and an optional dot)
+    int digit_count = 0;
+    while (s[i] >= '0' && s[i] <= '9') {
+        i++;
+        digit_count++;
+    }
+    
+    if (s[i] == '.') {
+        i++;
+        while (s[i] >= '0' && s[i] <= '9') {
+            i++;
+            digit_count++;
+        }
+    }
+
+    // If no digits were found before or after the dot, it's invalid (e.g., ".")
+    if (digit_count == 0) return false;
+
+    // 3. Scan the optional exponent part
+    if (s[i] == 'e' || s[i] == 'E') {
+        i++;
+        
+        // Skip optional sign inside the exponent
+        if (s[i] == '+' || s[i] == '-') i++;
+
+        // There must be at least one digit following the exponent sign
+        if (!(s[i] >= '0' && s[i] <= '9')) return false;
+        
+        while (s[i] >= '0' && s[i] <= '9') i++;
+    }
+
+    // The string is valid only if we successfully reached the null-terminator
+    return s[i] == '\0';
+}
